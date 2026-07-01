@@ -1,0 +1,671 @@
+/* src/components/Navbar.css - Fixed version */
+
+/* ============================================
+   MODERN NAVBAR WITH SOLID BACKGROUND
+   ============================================ */
+:root {
+  --primary: #00446E;
+  --primary-solid: #01446F;
+  --primary-light: rgba(0, 68, 110, 0.95);
+  --cta: #1DA8F0;
+  --cta-dark: #0d8ed0;
+  --background: #F8FAFB;
+  --text-dark: #1F2933;
+  --text-light: #FFFFFF;
+  
+  /* Navbar specific */
+  --navbar-bg: #01446F;
+  --dropdown-bg: #FFFFFF;
+  --dropdown-text: #1F2933;
+  --dropdown-hover-bg: #F0F7FF;
+  --mobile-menu-bg: #01446F;
+}
+
+/* ──────────────────────────────────────────────
+   BASE NAVIGATION - SOLID BACKGROUND
+────────────────────────────────────────────── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--navbar-bg);
+  transition: all 0.3s ease;
+  padding: 0.7rem 0;
+  z-index: 1100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove the pseudo-element for blur effect */
+.navbar::before {
+  display: none;
+}
+
+.navbar.scrolled {
+  background: var(--navbar-bg);
+  padding: 0.55rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo */
+.navbar-brand {
+  color: var(--text-light) !important;
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.navbar-brand:hover {
+  opacity: 0.9;
+}
+
+/* Toggler Icon */
+.navbar-toggler {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  padding: 0.5rem 0.75rem;
+  position: relative;
+  z-index: 1100;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+  border-color: var(--cta) !important;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggler.active {
+  border-color: var(--cta) !important;
+  background: rgba(29, 168, 240, 0.2);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler-icon.active {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231DA8F0' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M6 6L24 24M6 24L24 6'/%3e%3c/svg%3e") !important;
+}
+
+/* Navigation Links */
+.nav-link {
+  color: var(--text-light) !important;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem !important;
+  position: relative;
+  transition: color 0.3s ease;
+  z-index: 1;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--cta) !important;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 1rem;
+  width: 0;
+  height: 2px;
+  background: var(--cta);
+  transition: width 0.4s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: calc(100% - 2rem);
+}
+
+/* ============================================
+   IMPROVED DROPDOWN STYLES - WHITE BACKGROUND WITH DARK TEXT
+   ============================================ */
+
+/* Dropdown toggle */
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.dropdown-toggle::after {
+  display: none; /* Hide default arrow, using custom ChevronDown component */
+}
+
+/* Categories Dropdown - White background */
+.categories-dropdown {
+  background: #FFFFFF !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+  margin-top: 12px !important;
+  padding: 0.5rem 0 !important;
+  min-width: 280px !important;
+}
+
+.categories-dropdown .dropdown-item {
+  color: #1F2933 !important; /* Dark text for readability */
+  padding: 0.7rem 1.5rem !important;
+  font-weight: 500 !important;
+  transition: all 0.25s ease !important;
+}
+
+.categories-dropdown .dropdown-item:hover {
+  background: #F0F7FF !important;
+  color: #00446E !important;
+  padding-left: 1.8rem !important;
+}
+
+.categories-dropdown .dropdown-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #1DA8F0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.categories-dropdown .dropdown-item:hover::before {
+  opacity: 1;
+}
+
+/* User Dropdown - White background */
+.user-dropdown {
+  background: #FFFFFF !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+  margin-top: 12px !important;
+  padding: 0.5rem 0 !important;
+  min-width: 200px !important;
+  right: 0 !important;
+  left: auto !important;
+}
+
+.user-dropdown .dropdown-item {
+  color: #1F2933 !important;
+  padding: 0.7rem 1.5rem !important;
+  font-weight: 500 !important;
+  transition: all 0.25s ease !important;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background: #F0F7FF !important;
+  color: #00446E !important;
+  padding-left: 1.8rem !important;
+}
+
+.user-dropdown .logout-item {
+  color: #DC2626 !important;
+}
+
+.user-dropdown .logout-item:hover {
+  background: #FEF2F2 !important;
+  color: #B91C1C !important;
+}
+
+.user-dropdown .dropdown-divider {
+  margin: 0.5rem 0 !important;
+  border-color: #E5E7EB !important;
+}
+
+/* ============================================
+   IMPROVED USER & CART ICONS
+   ============================================ */
+
+/* User Icon Button */
+.user-icon-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50px !important;
+  padding: 0.5rem 1.2rem !important;
+  color: white !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+}
+
+.user-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: #1DA8F0 !important;
+  transform: translateY(-2px) !important;
+}
+
+.user-label {
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+}
+
+/* User Menu Button (when logged in) */
+.user-menu-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50px !important;
+  padding: 0.5rem 1.2rem !important;
+  color: white !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+}
+
+.user-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: #1DA8F0 !important;
+  transform: translateY(-2px) !important;
+}
+
+.user-menu-btn.active {
+  background: rgba(29, 168, 240, 0.3) !important;
+  border-color: #1DA8F0 !important;
+}
+
+.user-name {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  max-width: 100px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Cart Icon Button */
+.cart-icon-btn {
+  position: relative !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  color: white !important;
+}
+
+.cart-icon-btn:hover {
+  background: rgba(29, 168, 240, 0.3) !important;
+  border-color: #1DA8F0 !important;
+  transform: translateY(-2px) !important;
+  transform: scale(1.05) !important;
+}
+
+.cart-icon-btn svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+/* Cart Badge */
+.cart-badge {
+  position: absolute !important;
+  top: -5px !important;
+  right: -5px !important;
+  background: #1DA8F0 !important;
+  color: white !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 3px 7px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  animation: pulse 1.5s ease infinite !important;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+/* ============================================
+   MOBILE MENU FIXED COMPLETELY
+============================================ */
+
+.custom-mobile-menu {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+
+/* MOBILE */
+@media (max-width: 991.98px) {
+
+  .custom-mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+
+    width: 85%;
+    max-width: 350px;
+    height: 100vh;
+
+    background: #01446F;
+
+    padding: 5rem 1.5rem 2rem;
+
+    overflow-y: auto;
+
+    transition: right 0.35s ease;
+
+    z-index: 2000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    box-shadow: -5px 0 25px rgba(0,0,0,0.25);
+  }
+
+  .custom-mobile-menu.show {
+    right: 0;
+  }
+
+  .custom-mobile-menu .navbar-nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .custom-mobile-menu .nav-item {
+    width: 100%;
+  }
+
+  .custom-mobile-menu .nav-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    padding: 0.9rem 0 !important;
+
+    font-size: 1.05rem;
+
+    color: white !important;
+
+    cursor: pointer;
+
+    text-decoration: none;
+  }
+
+  .custom-mobile-menu .dropdown-toggle {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* MOBILE DROPDOWNS */
+
+  .categories-dropdown,
+  .user-dropdown {
+    position: relative !important;
+
+    inset: unset !important;
+
+    transform: none !important;
+
+    width: 100% !important;
+
+    margin-top: 0.5rem !important;
+
+    border-radius: 10px !important;
+
+    background: rgba(255,255,255,0.08) !important;
+
+    box-shadow: none !important;
+
+    border: none !important;
+
+    display: none;
+  }
+
+  .categories-dropdown.show,
+  .user-dropdown.show {
+    display: block;
+  }
+
+  .categories-dropdown .dropdown-item,
+  .user-dropdown .dropdown-item {
+    color: white !important;
+
+    padding: 0.8rem 1rem !important;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    display: block;
+  }
+
+  .categories-dropdown .dropdown-item:hover,
+  .user-dropdown .dropdown-item:hover {
+    background: rgba(29,168,240,0.25) !important;
+    color: #fff !important;
+  }
+
+  /* USER BUTTONS */
+
+  .user-icon-btn,
+  .user-menu-btn {
+    width: 100% !important;
+
+    justify-content: center;
+
+    margin-top: 0.5rem;
+
+    padding: 0.8rem 1rem !important;
+  }
+
+  .cart-nav-item {
+    margin-top: 1rem;
+  }
+
+  /* OVERLAY */
+
+  .mobile-menu-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.45);
+
+    z-index: 1500;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: 0.3s ease;
+  }
+
+  .mobile-menu-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* DESKTOP */
+@media (min-width: 992px) {
+
+  .custom-mobile-menu {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .mobile-menu-overlay {
+    display: none !important;
+  }
+
+  .user-nav-item {
+    position: relative;
+  }
+
+  .user-dropdown {
+    position: absolute !important;
+    right: 0;
+    top: 100%;
+  }
+}
+  .mobile-menu-overlay {
+    display: none !important;
+  }
+  
+  .user-nav-item {
+    position: relative !important;
+  }
+  
+  .user-dropdown {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+
+
+/* Fix for navbar width restriction */
+.navbar > .container-fluid {
+  max-width: 100% !important;
+}
+
+/* Ensure all navbar content is above the background */
+.navbar .navbar-nav,
+.navbar .nav-item,
+.navbar .dropdown,
+.navbar .dropdown-menu {
+  position: relative;
+  z-index: 2;
+}
+
+/* Smooth scrolling for mobile menu */
+.navbar-collapse {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix for touch targets on mobile */
+@media (max-width: 991.98px) {
+  .nav-link,
+  .dropdown-toggle,
+  .navbar-toggler {
+    cursor: pointer;
+    touch-action: manipulation;
+    pointer-events: auto !important;
+  }
+  
+  /* Ensure all interactive elements in mobile menu are clickable */
+  .navbar-collapse * {
+    pointer-events: auto !important;
+  }
+}
+
+/* Mega menu wrapper */
+.mega-dropdown {
+  position: relative;
+}
+
+/* Hidden by default */
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  background: white;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+/* Show */
+.mega-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Container */
+.mega-container {
+  display: flex;
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px;
+  gap: 40px;
+}
+
+/* LEFT SIDE */
+.mega-left {
+  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.mega-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #333;
+  transition: 0.2s;
+}
+
+.mega-item:hover {
+  background: #f1f5f9;
+  color: #1DA8F0;
+}
+
+/* Icon */
+.mega-item .icon {
+  font-size: 18px;
+}
+
+/* RIGHT SIDE */
+.mega-right {
+  flex: 1;
+  background: linear-gradient(135deg, #01446F, #1DA8F0);
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.mega-right h5 {
+  margin-bottom: 10px;
+}
+
+.mega-right .btn {
+  margin-top: 10px;
+  background: white;
+  color: #01446F;
+  border: none;
+}
+
+
+
+
+
+
+
