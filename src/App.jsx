@@ -17,7 +17,7 @@ import Cart from "./pages/CartPage";
 import CategoryPage from "./pages/Category";
 import Contact from "./pages/Contact";
 
-import Products from "./admin/Products";C
+import Products from "./admin/Products";
 import AdminLayout from "./admin/AdminLayout";
 import Orders from "./admin/Orders";
 import Categories from "./admin/Categories";
