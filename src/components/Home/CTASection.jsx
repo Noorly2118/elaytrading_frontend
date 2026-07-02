@@ -30,7 +30,7 @@ const CTASection = () => {
         <div className="mb-4 position-relative">
           <div className="cta-button-wrapper">
             <Link
-              to="/request-quote"
+              to="/contact"
               className="cta-button"
             >
               <span className="button-text">Request Free Quote</span>
