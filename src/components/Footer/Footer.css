@@ -426,3 +426,33 @@
     gap: 10px;
   }
 }
+
+.admin-secret{
+    position:absolute;
+    right:18px;
+    bottom:18px;
+    opacity:.18;
+    transition:.35s;
+}
+
+.admin-secret:hover{
+    opacity:1;
+    transform:scale(1.15);
+}
+
+.admin-hex{
+    width:10px;
+    height:10px;
+    background:#4AB2FF;
+
+    clip-path:polygon(
+        25% 0%,
+        75% 0%,
+        100% 50%,
+        75% 100%,
+        25% 100%,
+        0% 50%
+    );
+
+    box-shadow:0 0 10px rgba(74,178,255,.6);
+}

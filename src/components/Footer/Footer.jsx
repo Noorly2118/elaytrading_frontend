@@ -235,6 +235,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <Link to="/admin/login" className="admin-secret">
+    <span className="admin-hex"></span>
+</Link>
     </footer>
   );
 };
