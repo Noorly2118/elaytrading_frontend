@@ -10,7 +10,7 @@ import ProductsDetails from "./pages/ProductDetail";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Login from "./pages/Login";
-import Signup from "./pages/signup";
+import Signup from "./pages/Signup";
 import VerifyEmail from "./pages/VerifyEmail";
 
 import Cart from "./pages/CartPage";
