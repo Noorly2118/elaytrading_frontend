@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../context/cartcontext";
 import { useAuth } from "../context/AuthContext";
 import toast, { Toaster } from 'react-hot-toast';
+import api from "../services/api"
 
 const ShopPage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -27,7 +28,8 @@ const ShopPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/categories");
+       const res = await api.get("/categories");
+setCategories(res.data);
         const data = await res.json();
 
         // add "All" manually at the top
@@ -59,9 +61,8 @@ const ShopPage = () => {
       try {
         setLoading(true);
 
-        const res = await fetch(
-          `http://localhost:5000/api/products?category=${activeCategory}`
-        );
+       const res = await api.get(`/products?category=${activeCategory}`);
+setProducts(res.data);
 
         const data = await res.json();
 

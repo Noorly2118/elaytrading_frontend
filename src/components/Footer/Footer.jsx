@@ -236,7 +236,8 @@ const Footer = () => {
         </div>
       </div>
       <Link to="/admin/login" className="admin-secret">
-    <span className="admin-hex"></span>
+    <span className="admin-hex">  ⬢
+</span>
 </Link>
     </footer>
   );
