@@ -28,9 +28,9 @@ const ShopPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-       const res = await api.get("/categories");
-setCategories(res.data);
-        const data = await res.json();
+      const res = await api.get("/categories");
+const data = res.data;
+setCategories(data);
 
         // add "All" manually at the top
         setCategories([{ name: "All", slug: "all" }, ...data]);
@@ -61,10 +61,12 @@ setCategories(res.data);
       try {
         setLoading(true);
 
-       const res = await api.get(`/products?category=${activeCategory}`);
-setProducts(res.data);
+      const res = await api.get(
+  `/products?category=${activeCategory}`
+);
 
-        const data = await res.json();
+const data = res.data;
+setProducts(data);
 
         setProducts(data.products || []);
 
