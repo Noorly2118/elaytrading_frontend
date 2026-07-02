@@ -9,7 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 // Bank Logos
 import cbeLogo from "../assets/commercial_bank_logo.png";
-import awashLogo from "../assets/Awash_international_Bank.png";
+import awashLogo from "../assets/Awash_International_Bank.png";
 import dashenLogo from "../assets/Dashen_Bank.png";
 import telebirrLogo from "../assets/TeleBirr-Logo.png";
 
