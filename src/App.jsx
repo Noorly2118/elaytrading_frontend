@@ -9,7 +9,7 @@ import Shop from "./pages/Shop";
 import ProductsDetails from "./pages/ProductDetail";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 import Signup from "./pages/signup";
 import VerifyEmail from "./pages/VerifyEmail";
 
@@ -17,7 +17,7 @@ import Cart from "./pages/CartPage";
 import CategoryPage from "./pages/Category";
 import Contact from "./pages/Contact";
 
-import Products from "./admin/Products";
+import Products from "./admin/Products";C
 import AdminLayout from "./admin/AdminLayout";
 import Orders from "./admin/Orders";
 import Categories from "./admin/Categories";
