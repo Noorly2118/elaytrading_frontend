@@ -41,17 +41,18 @@ const ProductDetail = () => {
   }, [product]);
   useEffect(() => {
     const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get(`/products/${id}`);
-const product = res.data;
-        const data = await res.json();
-        setProduct(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+    try {
+  setLoading(true);
+
+  const { data } = await api.get(`/products/${id}`);
+
+  setProduct(data);
+
+} catch (err) {
+  console.error(err);
+} finally {
+  setLoading(false);
+}
     };
 
     fetchProduct();

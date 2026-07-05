@@ -1,79 +1,183 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 const HeroSection = () => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    let animationFrameId;
+    let particles = [];
+
+    const resizeCanvas = () => {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    };
+
+    class Particle {
+      constructor(width, height) {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+
+      update(width, height) {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x > width || this.x < 0) this.speedX *= -1;
+        if (this.y > height || this.y < 0) this.speedY *= -1;
+      }
+
+      draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(100, 180, 255, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    const initParticles = () => {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      particles = [];
+      const count = Math.min(80, Math.floor((rect.width * rect.height) / 15000));
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle(rect.width, rect.height));
+      }
+    };
+
+    const connectParticles = (ctx, width, height) => {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 150) {
+            const opacity = 0.15 * (1 - distance / 150);
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(100, 180, 255, ${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    };
+
+    const animate = () => {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      particles.forEach(particle => {
+        particle.update(rect.width, rect.height);
+        particle.draw(ctx);
+      });
+
+      connectParticles(ctx, rect.width, rect.height);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    resizeCanvas();
+    initParticles();
+    animate();
+
+    const handleResize = () => {
+      resizeCanvas();
+      initParticles();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
   return (
     <section className="hero-section">
-      {/* Animated scientific background (molecular / data flow) */}
-      <div className="hero-bg-overlay"></div>
-      <div className="animated-particles">
-        <div className="particle orbital-1"></div>
-        <div className="particle orbital-2"></div>
-        <div className="particle orbital-3"></div>
-        <div className="particle data-line-1"></div>
-        <div className="particle data-line-2"></div>
-        <div className="particle molecule-nucleus"></div>
-        <div className="particle electron-1"></div>
-        <div className="particle electron-2"></div>
+      {/* Canvas for dynamic particle network */}
+      <canvas ref={canvasRef} className="hero-canvas"></canvas>
+
+      {/* Floating geometric shapes */}
+      <div className="floating-shapes">
+        <div className="shape shape-1"></div>
+        <div className="shape shape-2"></div>
+        <div className="shape shape-3"></div>
+        <div className="shape shape-4"></div>
       </div>
 
       <div className="container position-relative">
         <div className="row align-items-center min-vh-100">
-          {/* Left: Content — scientific authority */}
-          <div className="col-lg-6 col-xl-6 hero-content">
-            <div></div>
-            {/* Headline — authoritative, not commercial */}
-            <h1 className="hero-title fw-bold mb-3">
-              Elay Trading
-              <span className="d-block mt-2">for Science That Demands Absolute Accuracy</span>
-            </h1>
-
-            {/* Secondary emphasis */}
-            <div className="hero-disciplines mb-4">
-              <span>Chemistry</span>
-              <span className="divider">•</span>
-              <span>Physics</span>
-              <span className="divider">•</span>
-              <span>Biology</span>
-              <span className="divider">•</span>
-              <span>Analytical Systems</span>
+          {/* Left: Content */}
+          <div className="col-lg-7 col-xl-7 hero-content mt-4">
+            {/* Badge */}
+            <div className="hero-badge mb-4 mt-5">
+              <span className="badge-icon">✦</span> Scientific Excellence Since 2010
             </div>
 
-            {/* CTA Buttons — B2B / procurement */}
-            <div className="d-flex flex-wrap gap-3 mb-5 hero-cta-group">
+            {/* Headline */}
+            <h1 className="hero-title fw-bold mb-3 mt-4">
+              ELAY TRADING
+            </h1>
+
+            {/* Subtitle */}
+             <p className="hero-subtext mb-4">
+              Elay Trading delivers premium laboratory equipment, analytical systems, 
+              and scientific solutions for institutions that demand accuracy.
+            </p>
+         
+            
+
+            {/* CTA Buttons */}
+            <div className="d-flex flex-wrap gap-3 mb-5 hero-cta-group mt-5">
               <Link
                 to="/shop"
-                className="btn btn-lg px-5 py-3 fw-semibold rounded-pill hero-btn-secondary"
+                className="btn btn-lg px-5 py-3 fw-semibold rounded-pill hero-btn-primary"
               >
                 Explore Equipment
+                <span className="btn-arrow">→</span>
               </Link>
               <Link
                 to="/contact"
-                className="btn btn-lg px-4 py-3 fw-semibold rounded-pill hero-btn-tertiary"
+                className="btn btn-lg px-4 py-3 fw-semibold rounded-pill hero-btn-secondary"
               >
-                Talk to Lab Specialist
+                Talk to Specialist
               </Link>
             </div>
+
+           
           </div>
 
-          {/* Right: Immersive lab visual — high‑end scientific environment */}
-          <div
-            className="hero-lab-wrapper"
-            style={{
-              backgroundImage: `url('https://i.pinimg.com/1200x/0c/6b/b7/0c6bb797b81fde16e697d5e1b7325561.jpg')`,
-              backgroundPosition: "50% -80px",
-              marginTop: '-70px',
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            <div className="lab-glow"></div>
+          {/* Right: Visual */}
+          <div className="col-lg-5 col-xl-5 hero-visual">
+            <div className="visual-container">
+              <div className="visual-ring ring-1"></div>
+              <div className="visual-ring ring-2"></div>
+              <div className="visual-ring ring-3"></div>
+              <div className="visual-core">
+                <div className="core-pulse"></div>
+              </div>
+              <div className="visual-label">Advanced Laboratory Systems</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ===== STYLES — high‑end scientific ===== */}
+      {/* Scroll indicator */}
+      
+
       <style>{`
-        /* ----- base section ----- */
+        /* ===== BASE ===== */
         .hero-section {
           position: relative;
           width: 100%;
@@ -81,476 +185,403 @@ const HeroSection = () => {
           right: 50%;
           margin-left: -50vw;
           margin-right: -50vw;
-          min-height: 90vh;
+          min-height: 100vh;
           display: flex;
           align-items: center;
-          padding-top: 120px 0;
           overflow: hidden;
-          background:#F1F2F4;
-          height: 120vh;
+          background: linear-gradient(135deg, #f8faff 0%, #e8f0fe 50%, #f0f5ff 100%);
+          padding: 80px 0;
         }
 
-        /* background overlay with subtle gradient */
-        .hero-bg-overlay {
+        /* ===== CANVAS BACKGROUND ===== */
+        .hero-canvas {
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          background: radial-gradient(circle at 20% 30%, rgba(20, 60, 100, 0.4) 0%, rgba(8, 20, 35, 0.85) 90%);
+          pointer-events: none;
           z-index: 1;
-          pointer-events: none;
         }
 
-        /* Mobile overlay - darkens image for readability */
-        .hero-mobile-overlay {
-          display: none;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(8, 20, 35, 0.75);
-          z-index: 2;
-          pointer-events: none;
-        }
-
-        /* ---- animated molecular / scientific particles ---- */
-        .animated-particles {
+        /* ===== FLOATING SHAPES ===== */
+        .floating-shapes {
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
           z-index: 0;
-          overflow: hidden;
           pointer-events: none;
+          overflow: hidden;
         }
-        .particle {
+
+        .shape {
           position: absolute;
           border-radius: 50%;
           opacity: 0.3;
-          background: rgba(70, 180, 255, 0.15);
-          box-shadow: 0 0 30px rgba(40, 160, 255, 0.1);
         }
-        .orbital-1 {
-          width: 400px;
-          height: 400px;
-          top: 10%;
-          left: 5%;
-          border: 1px solid rgba(70, 180, 255, 0.08);
-          border-radius: 50%;
-          animation: orbitSpin 28s linear infinite;
-          background: transparent;
-          box-shadow: none;
+
+        .shape-1 {
+          width: 300px;
+          height: 300px;
+          top: -50px;
+          right: -50px;
+          background: radial-gradient(circle, rgba(66, 153, 225, 0.15), transparent 70%);
+          animation: floatShape 20s ease-in-out infinite;
         }
-        .orbital-2 {
-          width: 280px;
-          height: 280px;
-          bottom: 5%;
-          right: 8%;
-          border: 1px solid rgba(70, 180, 255, 0.06);
-          border-radius: 50%;
-          animation: orbitSpin 22s linear infinite reverse;
-          background: transparent;
-          box-shadow: none;
+
+        .shape-2 {
+          width: 200px;
+          height: 200px;
+          bottom: 10%;
+          left: -30px;
+          background: radial-gradient(circle, rgba(99, 179, 237, 0.1), transparent 70%);
+          animation: floatShape 25s ease-in-out infinite reverse;
         }
-        .orbital-3 {
-          width: 180px;
-          height: 180px;
-          top: 55%;
-          left: 70%;
-          border: 1px solid rgba(70, 200, 255, 0.05);
-          border-radius: 50%;
-          animation: orbitSpin 18s linear infinite;
-          background: transparent;
-          box-shadow: none;
+
+        .shape-3 {
+          width: 150px;
+          height: 150px;
+          top: 40%;
+          right: 10%;
+          background: radial-gradient(circle, rgba(66, 153, 225, 0.08), transparent 70%);
+          animation: floatShape 18s ease-in-out infinite 2s;
         }
-        .data-line-1 {
-          width: 60%;
-          height: 2px;
-          top: 20%;
-          left: 10%;
-          background: linear-gradient(90deg, transparent, rgba(70, 200, 255, 0.1), transparent);
-          animation: scanLine 14s ease-in-out infinite;
-          border-radius: 0;
-        }
-        .data-line-2 {
-          width: 40%;
-          height: 2px;
+
+        .shape-4 {
+          width: 100px;
+          height: 100px;
           bottom: 30%;
-          right: 5%;
-          background: linear-gradient(90deg, transparent, rgba(70, 200, 255, 0.08), transparent);
-          animation: scanLine 18s ease-in-out infinite reverse;
-          border-radius: 0;
-        }
-        .molecule-nucleus {
-          width: 20px;
-          height: 20px;
-          top: 25%;
-          left: 20%;
-          background: rgba(70, 200, 255, 0.4);
-          box-shadow: 0 0 60px rgba(40, 160, 255, 0.3);
-          animation: pulseGlow 6s ease-in-out infinite;
-        }
-        .electron-1 {
-          width: 10px;
-          height: 10px;
-          top: 22%;
-          left: 18%;
-          background: #7fd4ff;
-          box-shadow: 0 0 30px #2aa0ff;
-          animation: electronOrbit 8s linear infinite;
-        }
-        .electron-2 {
-          width: 8px;
-          height: 8px;
-          top: 30%;
-          left: 24%;
-          background: #7fd4ff;
-          box-shadow: 0 0 30px #2aa0ff;
-          animation: electronOrbit 11s linear infinite reverse;
+          right: 30%;
+          background: radial-gradient(circle, rgba(99, 179, 237, 0.06), transparent 70%);
+          animation: floatShape 22s ease-in-out infinite 4s;
         }
 
-        /* animations */
-        @keyframes orbitSpin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        @keyframes scanLine {
-          0% { transform: translateX(-20%) scaleX(0.4); opacity: 0.1; }
-          50% { transform: translateX(20%) scaleX(1); opacity: 0.3; }
-          100% { transform: translateX(-20%) scaleX(0.4); opacity: 0.1; }
-        }
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.3); }
-        }
-        @keyframes electronOrbit {
-          0% { transform: rotate(0deg) translateX(60px) rotate(0deg); }
-          100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
+        @keyframes floatShape {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -30px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
         }
 
-        /* ----- left content ----- */
+        /* ===== LEFT CONTENT ===== */
         .hero-content {
           position: relative;
           z-index: 5;
-          padding-right: 30px;
-          padding-top: 140px;
+          padding-right: 40px;
+          margin-top:30px;
         }
 
         .hero-badge {
-          background: rgba(10, 40, 70, 0.7);
-          backdrop-filter: blur(4px);
-          border: 1px solid rgba(70, 180, 255, 0.2);
-          color: #b8dfff;
-          padding: 8px 22px;
-          border-radius: 40px;
-          font-size: 0.9rem;
+          display: inline-block;
+          background: rgba(66, 153, 225, 0.12);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(66, 153, 225, 0.15);
+          color: #2b6cb0;
+          padding: 8px 24px;
+          border-radius: 50px;
+          font-size: 0.85rem;
           font-weight: 500;
-          letter-spacing: 0.4px;
+          letter-spacing: 0.3px;
         }
+
         .badge-icon {
-          font-size: 1.1rem;
+          margin-right: 8px;
+          color: #4299e1;
         }
 
         .hero-title {
-          font-size: 3.4rem;
+          font-size: 4rem;
           line-height: 1.1;
-          font-weight: 700;
-          color: #fff;
-          text-shadow: 0 2px 20px rgba(0, 20, 50, 0.5);
-        }
-        .hero-title span {
-          color: #7fd4ff;
-          font-weight: 300;
-          letter-spacing: -0.3px;
+          font-weight: 800;
+          color: #1a202c;
         }
 
-        .hero-disciplines {
-          font-size: 1.2rem;
+        .hero-title span {
+          color: #2b6cb0;
           font-weight: 300;
-          color: #b0d4f0;
-          letter-spacing: 0.5px;
-        }
-        .hero-disciplines .divider {
-          margin: 0 10px;
-          color: #3a7ca5;
+          letter-spacing: -0.5px;
         }
 
         .hero-subtext {
           max-width: 520px;
-          color: #ccddee;
-          font-weight: 300;
-          line-height: 1.6;
-          opacity: 0.9;
+          color: #4a5568;
+          font-size: 1.15rem;
+          font-weight: 400;
+          line-height: 1.7;
         }
 
-        /* ----- buttons (B2B / institutional) ----- */
+        .hero-disciplines {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .discipline-tag {
+          background: rgba(66, 153, 225, 0.08);
+          border: 1px solid rgba(66, 153, 225, 0.12);
+          color: #2b6cb0;
+          padding: 5px 18px;
+          border-radius: 50px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+
+        .discipline-tag:hover {
+          background: rgba(66, 153, 225, 0.15);
+          transform: translateY(-2px);
+        }
+
+        /* ===== BUTTONS ===== */
         .hero-btn-primary {
-          background: #1a7fc4;
+          background: #2b6cb0;
           border: none;
           color: white;
           transition: all 0.3s ease;
-          box-shadow: 0 8px 25px rgba(26, 127, 196, 0.25);
+          box-shadow: 0 4px 20px rgba(43, 108, 176, 0.25);
+          position: relative;
+          overflow: hidden;
         }
+
         .hero-btn-primary:hover {
-          background: #0f6aad;
+          background: #1a4f7a;
           transform: translateY(-3px);
-          box-shadow: 0 12px 35px rgba(26, 127, 196, 0.4);
+          box-shadow: 0 8px 30px rgba(43, 108, 176, 0.35);
           color: white;
+        }
+
+        .btn-arrow {
+          display: inline-block;
+          margin-left: 10px;
+          transition: transform 0.3s ease;
+        }
+
+        .hero-btn-primary:hover .btn-arrow {
+          transform: translateX(6px);
         }
 
         .hero-btn-secondary {
           background: transparent;
-          border: 1.5px solid #5a9fd4;
-          color: #e0edf9;
-          backdrop-filter: blur(4px);
+          border: 2px solid #4299e1;
+          color: #2b6cb0;
           transition: all 0.3s ease;
         }
+
         .hero-btn-secondary:hover {
-          background: rgba(26, 127, 196, 0.15);
-          border-color: #7fd4ff;
-          color: white;
+          background: rgba(66, 153, 225, 0.08);
+          border-color: #2b6cb0;
+          color: #1a4f7a;
           transform: translateY(-3px);
-          box-shadow: 0 8px 25px rgba(26, 127, 196, 0.15);
+          box-shadow: 0 4px 15px rgba(66, 153, 225, 0.15);
         }
 
-        .hero-btn-tertiary {
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          color: #c0ddf5;
-          backdrop-filter: blur(4px);
-          transition: all 0.3s ease;
-        }
-        .hero-btn-tertiary:hover {
-          background: rgba(255, 255, 255, 0.08);
-          border-color: rgba(255, 255, 255, 0.3);
-          color: white;
-          transform: translateY(-3px);
-        }
-
-        /* ----- trust items (scientific) ----- */
+        /* ===== TRUST ITEMS ===== */
         .trust-wrapper {
           margin-top: 10px;
         }
+
         .trust-item {
           display: flex;
           align-items: center;
-          color: #d0e4f5;
-          font-size: 0.95rem;
-          font-weight: 400;
-          background: rgba(10, 35, 60, 0.4);
-          backdrop-filter: blur(5px);
-          padding: 6px 18px 6px 12px;
-          border-radius: 40px;
-          border: 1px solid rgba(70, 180, 255, 0.08);
+          color: #4a5568;
+          font-size: 0.9rem;
+          font-weight: 500;
+          gap: 8px;
         }
+
         .trust-icon {
-          font-size: 1.2rem;
-          opacity: 0.8;
+          color: #4299e1;
+          font-weight: 700;
         }
 
-        /* ----- right side: lab environment (cinematic) ----- */
-        .hero-lab-wrapper {
-          position: absolute;
-          right: -60px;
-          top: 60px;
-          bottom: 0;
-          z-index: 3;
-          width: 58%;
-          max-width: 800px;
-          height: 130%;
-          pointer-events: none;
-          margin-top: 50vh;
-          min-height: 100%;
-          filter: drop-shadow(-25px 0 70px rgba(29, 168, 240, 0.18))
-                  drop-shadow(0 25px 80px rgba(0, 0, 0, 0.35));
-          transform-origin: right bottom;
+        /* ===== RIGHT VISUAL ===== */
+        .hero-visual {
+          position: relative;
+          z-index: 5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 500px;
         }
 
-        .lab-glow {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          width: 85%;
-          height: 85%;
-          background: radial-gradient(
-            ellipse at right bottom,
-            rgba(29, 168, 240, 0.22) 0%,
-            rgba(0, 68, 110, 0.12) 40%,
-            transparent 70%
-          );
-          filter: blur(60px);
-          pointer-events: none;
-        }
-
-        .glass-orb {
-          position: absolute;
-          top: 15%;
-          right: 10%;
-          width: 200px;
-          height: 200px;
-          border-radius: 50%;
-          background: radial-gradient(circle at 30% 30%, rgba(120, 210, 255, 0.08), transparent 70%);
-          box-shadow: 0 0 80px rgba(50, 180, 255, 0.05);
-          pointer-events: none;
-        }
-        .glow-ring {
-          position: absolute;
-          bottom: 20%;
-          left: 5%;
-          width: 300px;
-          height: 300px;
-          border-radius: 50%;
-          border: 1px solid rgba(70, 200, 255, 0.04);
-          box-shadow: 0 0 100px rgba(30, 150, 255, 0.02);
-          pointer-events: none;
-        }
-        .reflection-line {
-          position: absolute;
-          top: 10%;
-          left: 15%;
-          width: 40%;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(180, 230, 255, 0.1), transparent);
-          transform: rotate(-12deg);
-          pointer-events: none;
-        }
-        .specimen-shadow {
-          position: absolute;
-          bottom: 0;
-          left: 0;
+        .visual-container {
+          position: relative;
           width: 100%;
-          height: 40%;
-          background: linear-gradient(0deg, rgba(0, 10, 25, 0.5) 0%, transparent 100%);
-          pointer-events: none;
+          max-width: 480px;
+          aspect-ratio: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
-        /* ============================================
-           RESPONSIVE - Tablet & Mobile (below 992px)
-           ============================================ */
+        .visual-ring {
+          position: absolute;
+          border-radius: 50%;
+          border: 2px solid rgba(66, 153, 225, 0.1);
+          animation: ringPulse 4s ease-in-out infinite;
+        }
+
+        .ring-1 {
+          width: 100%;
+          height: 100%;
+          animation-delay: 0s;
+          border-color: rgba(66, 153, 225, 0.08);
+        }
+
+        .ring-2 {
+          width: 75%;
+          height: 75%;
+          animation-delay: 1.3s;
+          border-color: rgba(66, 153, 225, 0.12);
+          border-width: 1.5px;
+        }
+
+        .ring-3 {
+          width: 50%;
+          height: 50%;
+          animation-delay: 2.6s;
+          border-color: rgba(66, 153, 225, 0.15);
+          border-width: 1px;
+        }
+
+        @keyframes ringPulse {
+          0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+          25% { transform: scale(1.05) rotate(5deg); opacity: 1; }
+          50% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+          75% { transform: scale(0.95) rotate(-5deg); opacity: 0.8; }
+        }
+
+        .visual-core {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #4299e1, #2b6cb0);
+          box-shadow: 
+            0 0 60px rgba(66, 153, 225, 0.3),
+            0 0 120px rgba(66, 153, 225, 0.1);
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .core-pulse {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.15);
+          animation: corePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes corePulse {
+          0%, 100% { transform: scale(1); opacity: 0.5; }
+          50% { transform: scale(1.4); opacity: 0.2; }
+        }
+
+        .visual-label {
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: #2b6cb0;
+          font-size: 0.85rem;
+          font-weight: 500;
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(10px);
+          padding: 8px 24px;
+          border-radius: 50px;
+          border: 1px solid rgba(66, 153, 225, 0.15);
+          white-space: nowrap;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          z-index: 3;
+        }
+
+        /* ===== SCROLL INDICATOR ===== */
+        .scroll-indicator {
+          position: absolute;
+          bottom: 30px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+          color: #718096;
+          font-size: 0.7rem;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          z-index: 5;
+          opacity: 0.6;
+          animation: scrollBounce 2s ease-in-out infinite;
+        }
+
+        .scroll-line {
+          width: 1px;
+          height: 40px;
+          background: linear-gradient(to bottom, #718096, transparent);
+        }
+
+        @keyframes scrollBounce {
+          0%, 100% { transform: translateX(-50%) translateY(0); }
+          50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 991.98px) {
-          .hero-section {
-            min-height: 100vh;
-            height: auto;
-            padding: 100px 0 80px;
-            background: #0b1a2b;
-            position: relative;
-          }
-
-          /* Mobile overlay - darkens image */
-          .hero-mobile-overlay {
-            display: block;
-          }
-
-          /* Hide particles on mobile for cleaner look */
-          .animated-particles {
-            opacity: 0.3;
-          }
-
-          /* Lab wrapper becomes full background */
-          .hero-lab-wrapper {
-            position: absolute;
-            top: 0;
-            right: 0;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            max-width: 100%;
-            height: 100%;
-            margin-top: 0;
-            min-height: 100%;
-            z-index: 1;
-            filter: none;
-            transform: none;
-            pointer-events: none;
-            background-size: cover !important;
-            background-position: center !important;
-          }
-
-          .hero-lab-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(8, 20, 35, 0.7);
-            z-index: 1;
-          }
-
-          .lab-glow {
-            display: none;
-          }
-
-          /* Content centered on mobile */
           .hero-content {
-            position: relative;
-            z-index: 5;
-            padding: 0;
-            margin: 0 auto;
+            padding-right: 0;
             text-align: center;
-            width: 100%;
-            max-width: 600px;
+            margin-bottom: 40px;
           }
 
-          .hero-title {
-            font-size: 2.8rem;
-            text-align: center;
-          }
-
-          .hero-title span {
-            display: block;
-          }
-
-          .hero-disciplines {
-            justify-content: center;
-            text-align: center;
-          }
-
-          .hero-subtext {
-            margin: 0 auto;
-            text-align: center;
-          }
-
-          /* Center CTA buttons */
-          .hero-cta-group {
-            justify-content: center;
-          }
-
-          .hero-cta-group .btn {
-            min-width: 200px;
-          }
-
-          /* Hide the original background overlay */
-          .hero-bg-overlay {
-            display: none;
-          }
-        }
-
-        /* ---- Tablet (768px - 991px) ---- */
-        @media (min-width: 768px) and (max-width: 991.98px) {
           .hero-title {
             font-size: 3rem;
           }
 
-          .hero-content {
-            padding: 0 2rem;
+          .hero-subtext {
+            margin: 0 auto;
           }
 
-          .hero-cta-group .btn {
-            min-width: 220px;
-            padding: 0.75rem 1.5rem !important;
+          .hero-disciplines {
+            justify-content: center;
+          }
+
+          .hero-cta-group {
+            justify-content: center;
+          }
+
+          .trust-wrapper {
+            justify-content: center;
+          }
+
+          .hero-visual {
+            min-height: 300px;
+          }
+
+          .visual-container {
+            max-width: 320px;
+          }
+
+          .visual-core {
+            width: 80px;
+            height: 80px;
+          }
+
+          .core-pulse {
+            width: 40px;
+            height: 40px;
+          }
+
+          .visual-label {
+            font-size: 0.75rem;
+            padding: 6px 16px;
+            bottom: -5px;
           }
         }
 
-        /* ---- Mobile (below 768px) ---- */
         @media (max-width: 767.98px) {
-          .hero-section {
-            padding: 80px 0 60px;
-          }
-
           .hero-title {
             font-size: 2.2rem;
           }
@@ -559,58 +590,65 @@ const HeroSection = () => {
             font-size: 1.6rem;
           }
 
-          .hero-disciplines {
+          .hero-subtext {
             font-size: 1rem;
-            flex-wrap: wrap;
-            gap: 0.25rem;
-          }
-
-          .hero-disciplines .divider {
-            margin: 0 6px;
           }
 
           .hero-cta-group {
             flex-direction: column;
             align-items: center;
-            gap: 1rem !important;
           }
 
           .hero-cta-group .btn {
             width: 100%;
-            max-width: 280px;
-            padding: 0.7rem 1.5rem !important;
-            font-size: 0.95rem !important;
+            max-width: 300px;
           }
 
-          .hero-content {
-            padding: 0 1rem;
+          .hero-visual {
+            min-height: 200px;
+          }
+
+          .visual-container {
+            max-width: 240px;
+          }
+
+          .visual-core {
+            width: 60px;
+            height: 60px;
+          }
+
+          .core-pulse {
+            width: 30px;
+            height: 30px;
+          }
+
+          .visual-label {
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            bottom: -2px;
+          }
+
+          .scroll-indicator {
+            display: none;
           }
 
           .trust-wrapper {
             flex-direction: column;
             align-items: center;
+            gap: 8px !important;
           }
 
-          .trust-item {
-            width: 100%;
-            max-width: 280px;
-            justify-content: center;
+          .hero-disciplines {
+            gap: 6px;
           }
 
-          /* Enhanced overlay for mobile */
-          .hero-lab-wrapper::before {
-            background: rgba(8, 20, 35, 0.8);
+          .discipline-tag {
+            font-size: 0.75rem;
+            padding: 4px 12px;
           }
         }
 
-        /* ---- Small Mobile (below 480px) ---- */
         @media (max-width: 479.98px) {
-          .hero-section {
-            padding: 70px 0 50px;
-            min-height: 50vh;
-            height:70vh;
-          }
-
           .hero-title {
             font-size: 1.8rem;
           }
@@ -619,96 +657,58 @@ const HeroSection = () => {
             font-size: 1.3rem;
           }
 
-          .hero-disciplines {
-            font-size: 0.85rem;
+          .hero-badge {
+            font-size: 0.7rem;
+            padding: 6px 16px;
           }
 
-          .hero-cta-group .btn {
-            max-width: 240px;
-            padding: 0.6rem 1.2rem !important;
-            font-size: 0.85rem !important;
+          .visual-container {
+            max-width: 180px;
           }
 
-          .hero-content {
-            padding: 0 0.75rem;
+          .visual-core {
+            width: 50px;
+            height: 50px;
           }
 
-          .hero-lab-wrapper::before {
-            background: rgba(8, 20, 35, 0.85);
+          .core-pulse {
+            width: 24px;
+            height: 24px;
+          }
+
+          .visual-label {
+            font-size: 0.6rem;
+            padding: 4px 10px;
           }
         }
 
-        /* ============================================
-           DESKTOP - Preserve original layout (992px+)
-           ============================================ */
+        /* ===== DESKTOP ===== */
         @media (min-width: 992px) {
           .hero-section {
-            height: 120vh;
-            min-height: 90vh;
+            padding: 0;
           }
 
           .hero-content {
-            padding-right: 30px;
-            padding-top: 140px;
-            text-align: left;
+            padding-top: 0;
           }
 
           .hero-title {
-            font-size: 3.4rem;
-            text-align: left;
-          }
-
-          .hero-disciplines {
-            justify-content: flex-start;
-          }
-
-          .hero-cta-group {
-            justify-content: flex-start;
-          }
-
-          .hero-cta-group .btn {
-            min-width: auto;
-          }
-
-          .hero-lab-wrapper {
-            display: block;
-            position: absolute;
-            right: -60px;
-            top: 60px;
-            bottom: 0;
-            z-index: 3;
-            width: 58%;
-            max-width: 800px;
-            height: 130%;
-            margin-top: 50vh;
-            min-height: 100%;
-            filter: drop-shadow(-25px 0 70px rgba(29, 168, 240, 0.18))
-                    drop-shadow(0 25px 80px rgba(0, 0, 0, 0.35));
-          }
-
-          .hero-mobile-overlay {
-            display: none !important;
-          }
-
-          .hero-bg-overlay {
-            display: block;
+            font-size: 4.2rem;
           }
         }
 
-        /* ---- Large Desktop (1400px+) ---- */
         @media (min-width: 1400px) {
           .hero-title {
-            font-size: 4rem;
+            font-size: 5rem;
           }
 
-          .hero-content {
-            padding-right: 60px;
+          .hero-subtext {
+            font-size: 1.3rem;
+            max-width: 580px;
           }
 
-          .hero-lab-wrapper {
-            width: 55%;
-            max-width: 900px;
-            right: -80px;
+          .visual-container {
+            max-width: 550px;
           }
         }
       `}</style>
