@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuth } from "./context/AuthContext"; 
 import { Toaster } from "react-hot-toast";
-
+import "./Toast.css";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -46,8 +46,69 @@ function App() {
     
     
   <BrowserRouter>
-        <Toaster position="top-right" />
-        <ScrollToTop/>
+import { Toaster } from "react-hot-toast";
+
+<Toaster
+  position="top-right"
+  reverseOrder={false}
+  gutter={14}
+  containerStyle={{
+    top: 24,
+    right: 24,
+  }}
+  toastOptions={{
+    duration: 3500,
+
+    style: {
+      background: "#ffffff",
+      color: "#1f2937",
+      border: "1px solid #dbe5ef",
+      borderLeft: "5px solid #0f4c81",
+      borderRadius: "18px",
+      padding: "16px 18px",
+      minWidth: "360px",
+      maxWidth: "420px",
+      fontSize: "15px",
+      fontWeight: "500",
+      boxShadow:
+        "0 12px 35px rgba(15,76,129,.12), 0 4px 12px rgba(0,0,0,.08)",
+    },
+
+    success: {
+      duration: 3000,
+      iconTheme: {
+        primary: "#0f766e",
+        secondary: "#ffffff",
+      },
+      style: {
+        borderLeft: "5px solid #0f766e",
+      },
+    },
+
+    error: {
+      duration: 4500,
+      iconTheme: {
+        primary: "#b91c1c",
+        secondary: "#ffffff",
+      },
+      style: {
+        borderLeft: "5px solid #b91c1c",
+      },
+    },
+
+    loading: {
+      duration: 3500,
+      iconTheme: {
+        primary: "#0f4c81",
+        secondary: "#ffffff",
+      },
+      style: {
+        borderLeft: "5px solid #0f4c81",
+      },
+    },
+  }}
+/>
+    <ScrollToTop/>
 
   <Routes>
 

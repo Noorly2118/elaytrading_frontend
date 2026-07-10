@@ -97,31 +97,7 @@ const CartPage = () => {
 
   return (
     <>
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-            style: {
-              background: '#10b981',
-              color: '#fff',
-            },
-          },
-          error: {
-            duration: 4000,
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-        }}
-      />
-
+    
       {/* Confirmation Modal */}
       <div className={`modal fade ${showModal ? 'show d-block' : ''}`} tabIndex="-1" role="dialog" style={{ display: showModal ? 'block' : 'none' }}>
         <div className="modal-dialog modal-dialog-centered" role="document">

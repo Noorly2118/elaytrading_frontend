@@ -136,31 +136,7 @@ const truncateText = (text, max = 80) => {
   return (
     <div className="category-page">
       {/* Toast Container */}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-            style: {
-              background: '#10b981',
-              color: '#fff',
-            },
-          },
-          error: {
-            duration: 5000,
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-        }}
-      />
-
+    
       {/* Dynamic Hero Section with Category Image */}
       <section className="category-hero" style={{ background: heroConfig.bgGradient }}>
         <div className="hero-background-image">

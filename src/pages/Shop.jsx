@@ -163,38 +163,7 @@ setProducts(data);
 
   return (
     <div className="shop-page">
-      {/* Toast Container */}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-            style: {
-              background: '#10b981',
-              color: '#fff',
-            },
-          },
-          error: {
-            duration: 4000,
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-          info: {
-            duration: 3000,
-            style: {
-              background: '#3b82f6',
-              color: '#fff',
-            },
-          },
-        }}
-      />
+     
 
       {/* HEADER */}
       <section className="shop-header text-center">

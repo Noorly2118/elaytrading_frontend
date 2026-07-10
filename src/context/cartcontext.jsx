@@ -215,6 +215,16 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+   const isInCart = useCallback(
+    (productId) => cart.some((item) => item._id === productId),
+    [cart]
+  );
+
+  const getCartItem = useCallback(
+    (productId) => cart.find((item) => item._id === productId),
+    [cart]
+  );
+
   // Calculate totals
   const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
   const totalPrice = cart.reduce(
@@ -233,6 +243,8 @@ export const CartProvider = ({ children }) => {
     removeFromCart,
     clearCart,
     refreshCart: fetchCart,
+     isInCart,      // add this
+    getCartItem, 
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

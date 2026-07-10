@@ -179,31 +179,7 @@ const CheckoutPage = () => {
   return (
     <div style={styles.pageWrapper} className="page-wrapper">
       {/* Toast Container */}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-            style: {
-              background: '#10b981',
-              color: '#fff',
-            },
-          },
-          error: {
-            duration: 5000,
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-        }}
-      />
-
+     
       {/* HEADER */}
       <div style={styles.header}>
         <h1 style={styles.title} className="header-title">Checkout</h1>
