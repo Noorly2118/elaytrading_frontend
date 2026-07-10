@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/cartcontext";
 import { useState } from "react";
-import toast, { Toaster } from 'react-hot-toast';
+
 
 const CartSidebar = ({ isOpen, onClose }) => {
   const { 
@@ -86,31 +86,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
  
   return (
     <>
-      {/* Toast Container */}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-            style: {
-              background: '#10b981',
-              color: '#fff',
-            },
-          },
-          error: {
-            duration: 4000,
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-        }}
-      />
+      
 
       {/* Remove Item Confirmation Modal */}
       <div className={`modal fade ${showRemoveModal ? 'show d-block' : ''}`} tabIndex="-1" role="dialog" style={{ display: showRemoveModal ? 'block' : 'none' }}>

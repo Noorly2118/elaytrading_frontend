@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import adminApi from "../services/adminApi";
-import toast, { Toaster } from 'react-hot-toast';
+
 
 const Payments = () => {
   // ========== STATE ==========
@@ -131,31 +131,7 @@ const Payments = () => {
   // ========== RENDER ==========
   return (
     <div style={styles.pageWrapper}>
-      {/* Toast Container */}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-            style: {
-              background: '#10b981',
-              color: '#fff',
-            },
-          },
-          error: {
-            duration: 4000,
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-        }}
-      />
+     
 
       {/* Header */}
       <div style={styles.header}>

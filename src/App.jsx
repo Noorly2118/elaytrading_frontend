@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuth } from "./context/AuthContext"; 
 import { Toaster } from "react-hot-toast";
-import "./Toast.css";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -46,7 +45,6 @@ function App() {
     
     
   <BrowserRouter>
-import { Toaster } from "react-hot-toast";
 
 <Toaster
   position="top-right"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import adminApi from '../services/adminApi';
-import toast, { Toaster } from 'react-hot-toast';
+
 
 const AdminOrderDetail = () => {
   const { id } = useParams();
@@ -118,15 +118,7 @@ const AdminOrderDetail = () => {
 
   return (
     <div style={styles.pageWrapper} className="page-wrapper">
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: { background: '#363636', color: '#fff' },
-          success: { style: { background: '#10b981', color: '#fff' } },
-          error: { style: { background: '#ef4444', color: '#fff' } },
-        }}
-      />
+    
 
       {/* Verify Payment Modal */}
       <div className={`modal ${showVerifyModal ? 'show d-block' : ''}`} tabIndex="-1" role="dialog" style={{ display: showVerifyModal ? 'block' : 'none', backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1150 }}>

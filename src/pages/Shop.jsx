@@ -15,15 +15,10 @@ const ShopPage = () => {
   // Use ref to prevent multiple clicks
   const isAddingRef = useRef(false);
 
-  const { cart, addToCart } = useCart();
+  const { cart, addToCart, isInCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Check if product already in cart
-  const isInCart = (productId) => {
-    return cart.some(item => item.productId?._id === productId);
-  };
 
   useEffect(() => {
     const fetchCategories = async () => {

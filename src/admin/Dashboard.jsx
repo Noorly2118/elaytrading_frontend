@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import adminApi from "../services/adminApi";
-import toast, { Toaster } from 'react-hot-toast';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -57,23 +56,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          error: {
-            duration: 4000,
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-        }}
-      />
+    
 
       {loading ? (
         <div style={styles.loadingContainer}>

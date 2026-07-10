@@ -12,22 +12,13 @@ export default function Login() {
   const navigate = useNavigate();
   const { login, user, loading } = useAuth();
 
-  // ✅ Redirect in useEffect
-  useEffect(() => {
-    if (!loading && user) {
-      toast.success(`Welcome back!`);
-      navigate("/shop", { replace: true });
-    }
-  }, [user, loading, navigate]);
 
   // Show loading error if auth is loading for too long
   useEffect(() => {
     if (loading) {
       // Optional: Show loading toast
       toast.loading('Loading...', { id: 'auth-loading' });
-    } else {
-      toast.dismiss('auth-loading');
-    }
+    } 
   }, [loading]);
 
   // =========================
@@ -76,37 +67,34 @@ export default function Login() {
   // =========================
   // SUBMIT
   // =========================
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!validateForm()) {
+    toast.error("Please fix all errors before continuing");
+    return;
+  }
 
-    if (!validateForm()) {
-      toast.error("Please fix all errors before continuing");
-      return;
+  setIsLoading(true);
+  setErrors({});
+
+  try {
+    const result = await login(form.email, form.password);
+
+    if (result.success) {
+      // Single toast, single navigation — no useEffect needed
+      navigate("/shop", { replace: true });
+    } else {
+      setErrors({ submit: result.error || "Login failed" });
+      // Don't toast here either — AuthContext.login() already toasts on failure
     }
-
-    setIsLoading(true);
-    setErrors({});
-
-    try {
-      const result = await login(form.email, form.password);
-
-      if (result.success) {
-        // Toast will be shown in useEffect after user is set
-        toast.success("Login successful! Redirecting...");
-      } else {
-        // Error is already shown in AuthContext, but we'll also set it here
-        setErrors({ submit: result.error || "Login failed" });
-        toast.error(result.error || "Login failed. Please try again.");
-      }
-    } catch (error) {
-      const errorMessage = error.message || "An unexpected error occurred";
-      setErrors({ submit: errorMessage });
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  } catch (error) {
+    const errorMessage = error.message || "An unexpected error occurred";
+    setErrors({ submit: errorMessage });
+    toast.error(errorMessage);
+  } finally {
+    setIsLoading(false);
+  }
+};
   // Inline CSS styles
   const styles = {
     page: {

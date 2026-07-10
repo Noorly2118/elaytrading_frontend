@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import adminApi from "../services/adminApi";
-import toast, { Toaster } from 'react-hot-toast';
+
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -68,24 +68,7 @@ const Orders = () => {
 
   return (
     <div style={styles.pageWrapper}>
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          error: {
-            duration: 4000,
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-        }}
-      />
-
+    
       {/* Header */}
       <div style={styles.header}>
         <div>
