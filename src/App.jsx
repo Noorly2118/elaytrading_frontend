@@ -36,6 +36,7 @@ import Payments from "./admin/Payments";
 import AdminUsers from "./admin/AdminUsers";
 import ScrollToTop from "./components/ScrollToTop";
 import AdminMessages from "./admin/AdminMessages";
+import Profile from "./pages/Profile";
 
 
 function App() {
@@ -125,6 +126,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/profile" element={<Profile/>} />
     </Route>
 
     {/* Admin Login */}

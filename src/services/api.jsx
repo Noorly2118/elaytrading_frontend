@@ -105,6 +105,20 @@ export const updateProduct = (id, product) =>
 export const deleteProduct = (id) =>
   api.delete(`/products/${id}`).then((res) => res.data);
 
+
+// ======================================================
+// PROFILE API
+// ======================================================
+
+export const getProfile = () =>
+  api.get("/profile").then((res) => res.data);
+
+export const updateProfile = (profileData) =>
+  api.put("/profile", profileData).then((res) => res.data);
+
+export const changePassword = (passwordData) =>
+  api.put("/profile/change-password", passwordData).then((res) => res.data);
+
 // -------------------------
 // Export Axios Instance
 // -------------------------
