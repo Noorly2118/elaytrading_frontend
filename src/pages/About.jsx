@@ -584,7 +584,7 @@ const AboutPage = () => {
               Get a free consultation and quote today!
             </p>
             <div className="cta-buttons-row" style={styles.ctaButtons}>
-              <Link to="/request-quote" style={styles.ctaPrimaryButton}
+              <Link to="/contact" style={styles.ctaPrimaryButton}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
                   e.currentTarget.style.boxShadow = "0 15px 40px rgba(0,0,0,0.3)";
